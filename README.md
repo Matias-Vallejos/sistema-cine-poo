@@ -1,12 +1,12 @@
 # Sistema de Gestión de Cine — Java POO
 
-Sistema integral de gestión para salas de cine desarrollado en **Java** aplicando los principios de la **Programación Orientada a Objetos (POO)**. Permite la administración de cartelera, configuración de salas y funciones, gestión de clientes y venta de entradas con cálculo automático de recaudación y control de ocupación en memoria.
+Sistema integral desarrollado en **Java** para la administración de salas de cine, cartelera de películas, programación de funciones y venta de entradas con control de aforo en memoria. El proyecto aplica los fundamentos de la **Programación Orientada a Objetos (POO)**, modelado de relaciones entre entidades y validación exhaustiva de datos por consola.
 
 ---
 
 ## 🏛️ Arquitectura y Diagrama de Clases
 
-El sistema modela las entidades del dominio respetando abstracción y separación de responsabilidades:
+El diseño desacopla las entidades del dominio, las proyecciones y el registro de ventas:
 
 ![Diagrama de Clases](./Diagrama.drawio.png)
 
@@ -15,34 +15,33 @@ El sistema modela las entidades del dominio respetando abstracción y separació
 ## 🚀 Conceptos de POO y Diseño Implementados
 
 * **Herencia y Polimorfismo:**
-  * Clase abstracta base `Pelicula` con atributos comunes (`nombre`, `duracion`, `genero`).
-  * Subclases `Largometraje` (extiende con tiempo de tráiler) y `Cortometraje` (extiende con indicador booleano de animación).
-* **Encapsulamiento y Control de Estado:**
-  * Atributos privados con métodos de acceso/mutación.
-  * La clase `Sala` gestiona de forma autónoma su capacidad total y cupo disponible según las entradas vendidas.
-* **Composición y Agregación de Entidades:**
-  * `Funcion`: Asocia una `Pelicula`, una `Sala` y un horario asignado.
-  * `CompraCliente`: Modela la transacción registrando el `Cliente`, la `Funcion` seleccionada, la cantidad de entradas y el monto final.
-* **Gestión de Colecciones en Memoria:**
-  * Uso de `ArrayList<T>` en la clase orquestadora `Cine` para coordinar el catálogo de películas, las salas, la cartelera de funciones y el histórico de transacciones.
-* **Capa de Soporte y Validaciones:**
-  * Módulo `Utilidades` para lectura y control estricto de tipos de datos por consola (números enteros, decimales, límites de rango y cadenas no vacías).
+  * Clase abstracta base `Pelicula` con atributos compartidos (`nombre`, `duracion`, `genero`).
+  * Subclases `Largometraje` (agrega `duracionTrailer`) y `Cortometraje` (agrega `origen`).
+* **Encapsulamiento y Control de Capacidad:**
+  * Atributos privados con métodos de acceso y mutación.
+  * La clase `Sala` encapsula `capacidad` y `capacidadDisponible`, actualizando los asientos libres ante cada venta mediante `actualizarCapacidad()`.
+* **Composición y Agregación:**
+  * `Funcion`: Compone una instancia de `Pelicula`, una de `Sala` y almacena el horario asignado.
+  * `CompraCliente`: Registra la transacción asociando los datos del `Cliente`, la `Funcion` elegida y la cantidad de entradas adquiridas.
+* **Colecciones en Memoria:**
+  * La clase `Cine` gestiona listas dinámicas (`ArrayList<T>`) para películas, salas, funciones programadas y registro histórico de compras.
+* **Validaciones Robustas:**
+  * Clase `Utilidades` para la captura y saneamiento de entradas en consola (números enteros, rangos de opciones y control de cadenas no vacías).
 
 ---
 
 ## 🛠️ Funcionalidades Principales
 
-* 🎬 **Administración de Películas:** Alta de largometrajes y cortometrajes con validación de datos técnicos.
-* 🚪 **Gestión de Salas:** Configuración de salas y control de capacidad física para el aforo.
-* 🕒 **Programación de Funciones:** Asignación de películas a salas en horarios determinados con validación de disponibilidad.
+* 🎬 **Gestión de Películas:** Registro de largometrajes y cortometrajes con validación de duración y metadatos técnicos.
+* 🚪 **Administración de Salas:** Creación de salas numeradas con control de capacidad total.
+* 🕒 **Programación de Funciones:** Asignación de películas a salas en horarios determinados con validación de existencia previa.
 * 🎟️ **Venta de Entradas:**
-  * Selección guiada de funciones disponibles.
-  * Verificación de cupos restantes en sala antes de confirmar la compra.
-  * Actualización en tiempo real de la capacidad disponible.
-* 📊 **Reportes y Recaudación:**
-  * Listado completo de cartelera y funciones activas.
-  * Reporte de compras por cliente.
-  * Cálculo del total recaudado por entradas vendidas.
+  * Selección guiada de funciones disponibles por listado indexado.
+  * Control estricto de disponibilidad: verificación de que la cantidad solicitada no supere la capacidad restante de la sala.
+  * Registro automático del comprador (`Cliente`) asociado a la transacción.
+* 📋 **Consultas y Listados:**
+  * Muestra de cartelera completa con detalles de cada función (película, sala, horario y butacas libres).
+  * Historial de compras por cliente con detalle de entradas adquiridas.
 
 ---
 
